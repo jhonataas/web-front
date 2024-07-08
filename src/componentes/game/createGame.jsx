@@ -11,7 +11,8 @@ export default function CreateGame() {
         id : Date.now(),
         name : '',
         description : '',
-        url_image : ''
+        url_image : '',
+        evaluations: []
     });
 
     const handleChange = (e) =>{

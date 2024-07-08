@@ -1,79 +1,124 @@
-import React from 'react'
-import { useLocation, Link, Navigate } from 'react-router-dom';//npm i react-router-dom
-import { useState } from 'react';
-import axios from 'axios'
+import React, { useState, useEffect } from 'react';
+import { useLocation, Navigate } from 'react-router-dom';
+import axios from 'axios';
 
 export default function UpdateGame() {
     const [msg, setMsg] = useState('');
+    const location = useLocation();
 
-    const {id,name,description,url_image} = useLocation().state;
+    // Verifica se o estado está presente e contém os dados necessários
+    const gameData = location.state || {};
 
+    // Estado local do componente para os dados do jogo
     const [game, setGame] = useState({
-        id,  
-        name,
-        description,
-        url_image
+        id: gameData.id || '',
+        name: gameData.name || '',
+        description: gameData.description || '',
+        url_image: gameData.url_image || '',
+        evaluations: gameData.evaluations || []
     });
 
-    const handleChange = (e) =>{
-        //constroi o novo valor
-        const novoValor = {
-            [e.target.name] : e.target.value
+    // Configuração do cabeçalho para a requisição HTTP
+    const config = {
+        headers: {
+            Authorization: "Bearer " + sessionStorage.getItem('token')
         }
-        //atualizar
+    };
+
+    // Busca dados do jogo se não estiverem presentes no estado
+    useEffect(() => {
+        if (!gameData.id || !gameData.name || !gameData.description || !gameData.url_image) {
+            const fetchGameDetails = async () => {
+                try {
+                    const response = await axios.get(`http://localhost:3000/games/games/${gameData.id}`, config);
+                    setGame({
+                        id: response.data.id,
+                        name: response.data.name,
+                        description: response.data.description,
+                        url_image: response.data.url_image,
+                        evaluations: response.data.evaluations
+                    });
+                } catch (error) {
+                    setMsg('Dados do jogo não encontrados.');
+                    console.error(error);
+                }
+            };
+            fetchGameDetails();
+        }
+    }, [gameData, config]);
+
+    // Handler para mudança nos inputs do formulário
+    const handleChange = (e) => {
+        const novoValor = {
+            [e.target.name]: e.target.value
+        }
         setGame({
             ...game,
             ...novoValor
         });
     }
 
-
-    const config = {
-        headers: {
-            Authorization: "Bearer " + sessionStorage.getItem('token')
-        }
-    }
-
+    // Handler para submissão do formulário de atualização
     const handleSubmit = async (e) => {
         e.preventDefault();
 
         try {
-            const resposta = await axios.put('http://localhost:3000/games/update-game',game,config);
-            if(resposta.status === 200){
+            // Exclui id e evaluations dos dados enviados
+            const { id, evaluations, ...updateData } = game;
+
+            const resposta = await axios.put(`http://localhost:3000/games/update-game/${id}`, updateData, config);
+            if (resposta.status === 200) {
                 setMsg('OK');
-                setAuthorized(true);
             }
         } catch (error) {
             console.log(error);
         }
-        
     }
 
-    if(msg === 'OK')
-        return <Navigate to='/fetch-games'/>
-    
+    // Redireciona para a lista de jogos se a atualização foi bem-sucedida
+    if (msg === 'OK') {
+        return <Navigate to='/fetch-games' />;
+    }
+
+    // Exibe mensagem de erro se os dados do jogo não foram encontrados
+    if (msg === 'Dados do jogo não encontrados.') {
+        return <p>{msg}</p>;
+    }
+
+    // Renderiza o formulário de atualização do jogo
     return (
         <form onSubmit={handleSubmit}>
             <div>
                 <label htmlFor="name">Título</label>
-                <input type="text" id="name" name="name" 
-                onChange={handleChange} value={game.name}
+                <input
+                    type="text"
+                    id="name"
+                    name="name"
+                    onChange={handleChange}
+                    value={game.name}
                 />
             </div>
             <div>
                 <label htmlFor="description">Descrição</label>
-                <input type="text" name="description" id="description" 
-                onChange={handleChange} value={game.description}
+                <input
+                    type="text"
+                    name="description"
+                    id="description"
+                    onChange={handleChange}
+                    value={game.description}
                 />
             </div>
             <div>
                 <label htmlFor="url_image">URL da Imagem</label>
-                <input type="text" name="url_image" id="url_image" 
-                onChange={handleChange} value={game.url_image}
+                <input
+                    type="text"
+                    name="url_image"
+                    id="url_image"
+                    onChange={handleChange}
+                    value={game.url_image}
                 />
             </div>
-            <Link to="/fetch-games">Voltar</Link>
-            <button>Atualizar</button>
+            <button type="submit">Atualizar</button>
         </form>
-    )
+    );
 }

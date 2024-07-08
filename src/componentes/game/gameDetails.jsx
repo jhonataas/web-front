@@ -1,18 +1,26 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { useParams } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 export default function GameDetails() {
-    const { id } = useParams();
-    const [game, setGame] = useState(null);
-    const [evaluations, setEvaluations] = useState([]);
-    const [newEvaluation, setNewEvaluation] = useState({ rate: '', comments: '' });
-    const [error, setError] = useState(null);
+    const { id } = useParams();  // Pega o ID dos parâmetros da URL
+    const [game, setGame] = useState(null);  // Estado para armazenar os detalhes do jogo
+    const [evaluations, setEvaluations] = useState([]);  // Estado para armazenar as avaliações do jogo
+    const [newEvaluation, setNewEvaluation] = useState({ rate: '', comments: '' });  // Estado para armazenar nova avaliação
+    const [error, setError] = useState(null);  // Estado para armazenar mensagens de erro
+    const navigate = useNavigate();
+
+    const config = {
+        headers: {
+            Authorization: "Bearer " + sessionStorage.getItem('token')
+        }
+    }
 
     useEffect(() => {
         async function fetchGameDetails() {
             try {
-                const response = await axios.get(`http://localhost:3000/games/${id}`);
+                const response = await axios.get(`http://localhost:3000/games/games/${id}`, config);
                 setGame(response.data);
                 setEvaluations(response.data.evaluations);
             } catch (error) {
@@ -27,23 +35,41 @@ export default function GameDetails() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await axios.post(`http://localhost:3000/games/${id}/evaluations`, newEvaluation);
+            const response = await axios.post(`http://localhost:3000/games/games/${id}/evaluations`, newEvaluation, config);
             setEvaluations([...evaluations, response.data]);
             setNewEvaluation({ rate: '', comments: '' });
         } catch (error) {
             setError('Erro ao adicionar a avaliação.');
+            console.error(error);
         }
     };
+
+    const handleDelete = async () =>{
+        let c = confirm(`Deseja apagar o jogo ${name}`);
+        if(c === true){
+          try {
+            const resposta = await axios.delete(`http://localhost:3000/games/remove-game/${id}`,config);
+            if(resposta.status === 200)
+                navigate('/fetch-games');
+          } catch (error) {
+            console.log(error);
+          }
+        }
+      }
 
     if (!game) {
         return <p>Carregando...</p>;
     }
 
+    const { name, description, url_image } = game;
+
     return (
         <div>
-            <h1>{game.title}</h1>
-            <p>{game.description}</p>
-            <img src={game.url_image} alt={game.title} />
+            <Link to='/update-game' state={{name,description,url_image,id}}>Atualizar</Link>
+            <button onClick={handleDelete}>Apagar</button>
+            <h1>{name}</h1>
+            <p>{description}</p>
+            <img src={url_image} alt={name} />
             <h2>Avaliações</h2>
             <ul>
                 {evaluations.map(evaluation => (
@@ -75,6 +101,7 @@ export default function GameDetails() {
                 <button type="submit">Adicionar Avaliação</button>
             </form>
             {error && <p>{error}</p>}
+            <Link to='/fetch-games'>Voltar</Link>
         </div>
     );
 }
