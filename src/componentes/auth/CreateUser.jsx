@@ -1,72 +1,68 @@
-import React from 'react';
-import '../../styles/CreateUser.css';
-import {set, useForm} from 'react-hook-form'; //npm i react-hook-form
-import { yupResolver } from "@hookform/resolvers/yup"; //npm i @hookform/resolvers
-import * as yup from "yup"; //npm i yup
-import axios from 'axios';//npm i axios
-import { useState } from 'react';
+import React, { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as yup from 'yup';
+import axios from 'axios';
 import { Navigate } from 'react-router-dom';
-import { Link } from 'react-router-dom'; 
+import '../../styles/CreateUser.css';
 
+// Objeto de validação de campos com yup
 const schema = yup.object({
     username: yup.string().required('Usuário obrigatório'),
     email: yup.string().email('Email inválido').required('Email obrigatório'),
-    password: yup.string().min(4,'Senha com no mínimo 4 caracteres').required(),
+    password: yup.string().min(2, 'Senha com no mínimo 2 caracteres').required('Senha obrigatória'),
     passwordConf: yup.string().required('Confirme a senha').oneOf([yup.ref('password')], 'As senhas devem coincidir!'),
 }).required();
 
+const CreateUser = () => {
+    const [msg, setMsg] = useState('');
 
-export default function CreateUser(){
-
-    const [msg, setMsg] = useState();
-
-    const form = useForm({
+    const { register, handleSubmit, formState: { errors } } = useForm({
         resolver: yupResolver(schema)
     });
 
-    const { register, handleSubmit, formState } = form;
-
-    const {errors} = formState;
-
-    const submit = async (data) => {
-        
+    const onSubmit = async (data) => {
         try {
             const response = await axios.post('http://localhost:3000/auth/create', data);
-            if(response.status === 200)
-               setMsg('OK');
+            if (response.status === 200)
+                setMsg('OK');
         } catch (error) {
             setMsg(error.response.data);
-        }   
-    }
+        }
+    };
 
-    if(msg === 'OK')
-        return <Navigate to='/'/>
+    if (msg === 'OK')
+        return <Navigate to='/' />;
 
     return (
-        <>
-            <h2>Crie uma nova conta</h2>
-            <form onSubmit={handleSubmit(submit)} noValidate>
-                <label htmlFor="username" placeholder="usuário">Usuário</label>
-                <input type="text" id="username" {...register('username')} />
-                <p className='erro'>{errors.username?.message}</p>
-
-                <label htmlFor="email" placeholder="email">Email</label>
-                <input type="text" id="email" {...register('email')} />
-                <p className='erro'>{errors.email?.message}</p>
-
-                <label htmlFor="password">Senha</label>
-                <input type="password" id="password" {...register('password')} />
-                <p className='erro'>{errors.password?.message}</p>
-
-                <label htmlFor="password">Confirmar Senha</label>
-                <input type="password" id="passwordConf" {...register('passwordConf')} />
-                <p className='erro'>{errors.passwordConf?.message}</p>
-
-                <button>Criar Usuário</button>
-                <Link to='/'>Voltar</Link>
+        <div className="login-container">
+            <h2 className="login-title">Crie uma nova conta</h2>
+            <form className="login-form" onSubmit={handleSubmit(onSubmit)} noValidate>
+                <div className="form-group">
+                    <label htmlFor="username" className="form-label">Usuário</label>
+                    <input type="text" id="username" className="form-input" {...register('username')} />
+                    <p className="error-message">{errors.username?.message}</p>
+                </div>
+                <div className="form-group">
+                    <label htmlFor="email" className="form-label">Email</label>
+                    <input type="text" id="email" className="form-input" {...register('email')} />
+                    <p className="error-message">{errors.email?.message}</p>
+                </div>
+                <div className="form-group">
+                    <label htmlFor="password" className="form-label">Senha</label>
+                    <input type="password" id="password" className="form-input" {...register('password')} />
+                    <p className="error-message">{errors.password?.message}</p>
+                </div>
+                <div className="form-group">
+                    <label htmlFor="passwordConf" className="form-label">Confirmar Senha</label>
+                    <input type="password" id="passwordConf" className="form-input" {...register('passwordConf')} />
+                    <p className="error-message">{errors.passwordConf?.message}</p>
+                </div>
+                <button type="submit" className="submit-button">Criar Usuário</button>
             </form>
-            <p className='server-response'>{msg}</p>
-        </>
-    )
+            <p className="server-response">{msg}</p>
+        </div>
+    );
+};
 
-}
+export default CreateUser;

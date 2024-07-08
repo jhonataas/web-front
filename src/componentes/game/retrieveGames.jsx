@@ -1,14 +1,12 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import axios from 'axios';
-import { Link } from 'react-router-dom'; // Lembrete npm install react-router-dom
+import { Link } from 'react-router-dom';
+import '../../styles/RetrieveGames.css'; // Certifique-se de criar e importar o CSS
 
 export default function RetrieveGames() {
     const [games, setGames] = useState([]);
-    const [filteredGames, setFilteredGames] = useState([]);
     const [authorized, setAuthorized] = useState(false);
-    const [searchTerm, setSearchTerm] = useState('');
-    const [currentPage, setCurrentPage] = useState(1);
-    const gamesPerPage = 15;
+    const carouselRef = useRef(null);
 
     const config = {
         headers: {
@@ -21,10 +19,7 @@ export default function RetrieveGames() {
             try {
                 const resposta = await axios.get('http://localhost:3000/games/games', config);
                 if (resposta.status === 200) {
-                    // Ordena os jogos pelo nome antes de armazenar
-                    const sortedGames = resposta.data.sort((a, b) => a.name.localeCompare(b.name));
-                    setGames(sortedGames);
-                    setFilteredGames(sortedGames); // Inicializa os jogos filtrados com todos os jogos
+                    setGames(resposta.data);
                     setAuthorized(true);
                 }
             } catch (error) {
@@ -33,64 +28,35 @@ export default function RetrieveGames() {
         }
         fetchGames();
     }, []);
+  
+    if (!authorized) return <p className="no-auth">Sem Autorização</p>;
 
-    // Função para filtrar os jogos conforme o usuário digita na barra de pesquisa
-    useEffect(() => {
-        const filtered = games.filter(game =>
-            game.name.toLowerCase().includes(searchTerm.toLowerCase())
-        );
-        setFilteredGames(filtered);
-    }, [searchTerm, games]);
+    const scrollLeft = () => {
+        carouselRef.current.scrollBy({ left: -600, behavior: 'smooth' });
+    };
 
-    // Lógica para calcular os jogos a serem exibidos na página atual
-    const indexOfLastGame = currentPage * gamesPerPage;
-    const indexOfFirstGame = indexOfLastGame - gamesPerPage;
-    const currentGames = filteredGames.slice(indexOfFirstGame, indexOfLastGame);
-
-    // Função para alterar a página atual
-    const paginate = (pageNumber) => setCurrentPage(pageNumber);
-
-    if (!authorized) return <p>Sem Autorização</p>;
+    const scrollRight = () => {
+        carouselRef.current.scrollBy({ left: 600, behavior: 'smooth' });
+    };
 
     return (
-        <div>
-            <Link to='/create-game'>Adicionar Novo Jogo</Link>
-            <input
-                type="text"
-                placeholder="Buscar por nome de jogo"
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-            />
-            <table>
-                <thead>
-                    <tr>
-                        <th>Nome</th>
-                        <th>Imagem</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {currentGames.map(game => (
-                        <tr key={game.id}>
-                            <td>
-                                <Link to={`/games/${game.id}`}>{game.name}</Link>
-                            </td>
-                            <td>
-                                <img src={game.url_image} alt={game.name} style={{ width: '100px', height: 'auto' }} />
-                            </td>
-                        </tr>
+        <div className="carousel-container">
+            <h2 className="carousel-title">Lista de Jogos</h2>
+            <Link to='/create-game' className="add-game-link">Adicionar Novo Jogo</Link>
+            <div className="carousel-wrapper">
+                <button className="carousel-nav left" onClick={scrollLeft}>&lt;</button>
+                <div className="carousel" ref={carouselRef}>
+                    {games.map(game => (
+                        <div key={game.id} className="carousel-item">
+                            <Link to={`/game/${game.id}`} className="game-link">
+                                <img src={game.url_image} alt={game.name} className="game-image" />
+                                <div className="game-name">{game.name}</div>
+                            </Link>
+                        </div>
                     ))}
-                </tbody>
-            </table>
-            {/* Paginação */}
-            <ul className="pagination">
-                {Array.from({ length: Math.ceil(filteredGames.length / gamesPerPage) }, (_, i) => (
-                    <li key={i} className={`page-item ${currentPage === i + 1 ? 'active' : ''}`}>
-                        <button onClick={() => paginate(i + 1)} className="page-link">
-                            {i + 1}
-                        </button>
-                    </li>
-                ))}
-            </ul>
+                </div>
+                <button className="carousel-nav right" onClick={scrollRight}>&gt;</button>
+            </div>
         </div>
     );
 }

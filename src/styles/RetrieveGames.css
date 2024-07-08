@@ -1,0 +1,133 @@
+/* Estilos gerais para o componente RetrieveGames */
+body {
+    font-family: 'Arial', sans-serif;
+    background-image: url('../assets/space.png'); /* Caminho relativo para a imagem */
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    color: #ffffff;
+}
+
+.carousel-container {
+    padding: 2rem;
+    background-color: rgba(0, 0, 0, 0.603);
+    border-radius: 12px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+    text-align: center;
+    width: 95%; /* Ajuste a largura para acomodar 5 itens */
+    max-width: 1100px; /* Ajuste o valor conforme necessário */
+}
+
+.carousel-title {
+    margin-bottom: 1.5rem;
+    font-size: 1.5rem;
+    color: #ffffff;
+}
+
+.add-game-link {
+    display: inline-block;
+    margin-bottom: 1.5rem;
+    padding: 0.75rem 1.5rem;
+    background-color: #a020f0;
+    color: #ffffff;
+    border-radius: 8px;
+    text-decoration: none;
+    font-size: 1rem;
+}
+
+.add-game-link:hover {
+    background-color: #800080;
+}
+
+.carousel-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+}
+
+.carousel {
+    display: flex;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    padding-bottom: 1rem;
+    width: 100%;
+    padding: 0 60px; /* Adiciona espaço para as setas */
+    transition: transform 0.3s ease-in-out;
+}
+
+.carousel::-webkit-scrollbar {
+    display: none;
+}
+
+.carousel-item {
+    flex: 0 0 18%; /* Ajuste a largura para acomodar 5 itens */
+    margin: 0 0.5rem;
+    transition: transform 0.3s ease-in-out;
+}
+
+.carousel-item:hover {
+    transform: scale(1.05);
+}
+
+.game-link {
+    color: #90caf9;
+    text-decoration: none;
+}
+
+.game-link:hover {
+    text-decoration: underline;
+}
+
+.game-image {
+    width: 100%; /* Ocupa toda a largura do item */
+    height: 150px;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+.game-name {
+    margin-top: 0.5rem;
+    font-size: 1rem;
+    color: #ffffff;
+    text-align: center;
+}
+
+.carousel-nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: rgba(0, 0, 0, 0.7);
+    border: none;
+    color: #ffffff;
+    font-size: 1.5rem; /* Reduzir o tamanho da seta */
+    cursor: pointer;
+    padding: 0.5rem; /* Reduzir o padding */
+    border-radius: 50%;
+    z-index: 1;
+    transition: background-color 0.3s, transform 0.3s;
+}
+
+.carousel-nav.left {
+    left: 10px; /* Ajuste a posição da seta esquerda */
+}
+
+.carousel-nav.right {
+    right: 10px; /* Ajuste a posição da seta direita */
+}
+
+.carousel-nav:hover {
+    background-color: #a020f0;
+    transform: scale(1.1); /* Reduzir o efeito de hover */
+}
+
+.no-auth {
+    color: #e74c3c;
+    font-size: 1.5rem;
+}
