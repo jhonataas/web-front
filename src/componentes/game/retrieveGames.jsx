@@ -4,7 +4,11 @@ import { Link } from 'react-router-dom'; // Lembrete npm install react-router-do
 
 export default function RetrieveGames() {
     const [games, setGames] = useState([]);
+    const [filteredGames, setFilteredGames] = useState([]);
     const [authorized, setAuthorized] = useState(false);
+    const [searchTerm, setSearchTerm] = useState('');
+    const [currentPage, setCurrentPage] = useState(1);
+    const gamesPerPage = 15;
 
     const config = {
         headers: {
@@ -17,7 +21,10 @@ export default function RetrieveGames() {
             try {
                 const resposta = await axios.get('http://localhost:3000/games/games', config);
                 if (resposta.status === 200) {
-                    setGames(resposta.data);
+                    // Ordena os jogos pelo nome antes de armazenar
+                    const sortedGames = resposta.data.sort((a, b) => a.name.localeCompare(b.name));
+                    setGames(sortedGames);
+                    setFilteredGames(sortedGames); // Inicializa os jogos filtrados com todos os jogos
                     setAuthorized(true);
                 }
             } catch (error) {
@@ -26,12 +33,34 @@ export default function RetrieveGames() {
         }
         fetchGames();
     }, []);
-  
+
+    // Função para filtrar os jogos conforme o usuário digita na barra de pesquisa
+    useEffect(() => {
+        const filtered = games.filter(game =>
+            game.name.toLowerCase().includes(searchTerm.toLowerCase())
+        );
+        setFilteredGames(filtered);
+    }, [searchTerm, games]);
+
+    // Lógica para calcular os jogos a serem exibidos na página atual
+    const indexOfLastGame = currentPage * gamesPerPage;
+    const indexOfFirstGame = indexOfLastGame - gamesPerPage;
+    const currentGames = filteredGames.slice(indexOfFirstGame, indexOfLastGame);
+
+    // Função para alterar a página atual
+    const paginate = (pageNumber) => setCurrentPage(pageNumber);
+
     if (!authorized) return <p>Sem Autorização</p>;
 
     return (
         <div>
             <Link to='/create-game'>Adicionar Novo Jogo</Link>
+            <input
+                type="text"
+                placeholder="Buscar por nome de jogo"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+            />
             <table>
                 <thead>
                     <tr>
@@ -40,10 +69,10 @@ export default function RetrieveGames() {
                     </tr>
                 </thead>
                 <tbody>
-                    {games.map(game => (
+                    {currentGames.map(game => (
                         <tr key={game.id}>
                             <td>
-                                <Link to={`/game/${game.id}`}>{game.name}</Link>
+                                <Link to={`/games/${game.id}`}>{game.name}</Link>
                             </td>
                             <td>
                                 <img src={game.url_image} alt={game.name} style={{ width: '100px', height: 'auto' }} />
@@ -52,6 +81,16 @@ export default function RetrieveGames() {
                     ))}
                 </tbody>
             </table>
+            {/* Paginação */}
+            <ul className="pagination">
+                {Array.from({ length: Math.ceil(filteredGames.length / gamesPerPage) }, (_, i) => (
+                    <li key={i} className={`page-item ${currentPage === i + 1 ? 'active' : ''}`}>
+                        <button onClick={() => paginate(i + 1)} className="page-link">
+                            {i + 1}
+                        </button>
+                    </li>
+                ))}
+            </ul>
         </div>
     );
 }
