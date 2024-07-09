@@ -1,0 +1,143 @@
+/* src/styles/GameDetails.css */
+
+.game-details {
+    font-family: 'Press Start 2P', cursive;
+    color: #ffffff;
+    padding: 10px;
+    background-color: rgba(0, 0, 0, 0.85);
+    border-radius: 10px;
+    max-width: 800px;
+    margin: 10px auto;
+    overflow-y: auto; /* Adiciona rolagem vertical */
+    max-height: 84vh; /* Define a altura máxima */
+    margin-top: 5rem;
+}
+
+.game-details-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+.game-main-info {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    
+}
+
+.game-title {
+    font-size: 1rem;
+    margin: 10px 0;
+}
+
+.game-description {
+    margin: 10px;
+    max-width: 400px;
+    font-size: 0.75rem;
+}
+
+.game-image {
+    width: 100%;
+    max-width: 250px;
+    height: auto;
+    max-height: 250px;
+    margin: 10px;
+    border-radius: 10px;
+}
+
+.evaluations-title {
+    font-size: 0.875rem;
+    margin: 2px 0;
+}
+
+.evaluations-list {
+    list-style: none;
+    padding: 0;
+}
+
+.evaluation-item {
+    margin: 10px 0;
+    padding: 8px;
+    border: 1px solid #ffffff;
+    border-radius: 10px;
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.evaluation-user, .evaluation-rate, .evaluation-comments {
+    margin: 5px 0;
+    font-size: 0.75rem;
+}
+
+.add-evaluation-title {
+    font-size: 0.875rem;
+    margin: 2px 0;
+}
+
+.evaluation-form {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group {
+    margin: 8px 0;
+}
+
+.form-label {
+    margin-bottom: 5px;
+    font-size: 0.75rem;
+}
+
+.form-input {
+    padding: 6px;
+    border: 1px solid #ffffff;
+    border-radius: 10px;
+    background-color: rgba(0, 0, 0, 0.7);
+    color: #ffffff;
+    font-family: 'Press Start 2P', cursive;
+    font-size: 0.75rem;
+}
+
+.button {
+    padding: 6px 12px;
+    margin: 8px 0;
+    background-color: #a020f0;
+    color: #ffffff;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-family: 'Press Start 2P', cursive;
+    font-size: 0.75rem;
+}
+
+.button:hover {
+    background-color: #800080;
+}
+
+.error-message {
+    color: #e74c3c;
+    margin: 8px 0;
+}
+
+.update-button, .delete-button, .edit-button, .submit-button, .back-button {
+    font-size: 0.75rem;
+    margin-right: 5px;
+}
+
+/* Personaliza a barra de rolagem */
+.game-details::-webkit-scrollbar {
+    width: 6px; /* Reduz a largura da barra de rolagem */
+}
+
+.game-details::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.7);
+}
+
+.game-details::-webkit-scrollbar-thumb {
+    background: rgba(160, 32, 240, 0.7); /* Torna a barra de rolagem mais discreta */
+    border-radius: 10px;
+}
+
+.game-details::-webkit-scrollbar-thumb:hover {
+    background: rgba(128, 0, 128, 0.7);
+}

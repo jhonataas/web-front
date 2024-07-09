@@ -2,18 +2,17 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useParams, Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
+import '../../styles/GameDetails.css';
 
 export default function GameDetails() {
-    const { id } = useParams();  // Pega o ID dos parâmetros da URL
-    const [game, setGame] = useState(null);  // Estado para armazenar os detalhes do jogo
-    const [evaluations, setEvaluations] = useState([]);  // Estado para armazenar as avaliações do jogo
-    const [newEvaluation, setNewEvaluation] = useState({ rate: '', comments: '' });  // Estado para armazenar nova avaliação
-    const [error, setError] = useState(null);  // Estado para armazenar mensagens de erro
+    const { id } = useParams();
+    const [game, setGame] = useState(null);
+    const [evaluations, setEvaluations] = useState([]);
+    const [newEvaluation, setNewEvaluation] = useState({ rate: '', comments: '' });
+    const [error, setError] = useState(null);
     const navigate = useNavigate();
     const usuarioId = sessionStorage.getItem('userId');
     const usuarioName = sessionStorage.getItem('userName');
-    console.log(usuarioId)
-    console.log(usuarioName)
 
     const config = {
         headers: {
@@ -43,7 +42,7 @@ export default function GameDetails() {
                 rate: newEvaluation.rate,
                 comments: newEvaluation.comments,
                 userId: usuarioId,
-                userName: usuarioName // Incluir o userName aqui também, se estiver disponível
+                userName: usuarioName
             };
 
             const response = await axios.post(`http://localhost:3000/games/games/${id}/evaluations`, evaluationData, config);
@@ -69,7 +68,7 @@ export default function GameDetails() {
         }
       }
     
-      const handleDeleteEvaluation = async (evaluationId) => {
+    const handleDeleteEvaluation = async (evaluationId) => {
         try {
             const response = await axios.delete(`http://localhost:3000/evaluations/${evaluationId}`, config);
             if (response.status === 200) {
@@ -100,51 +99,59 @@ export default function GameDetails() {
     const { name, description, url_image } = game;
 
     return (
-        <div>
-            <Link to='/update-game' state={{name,description,url_image,id}}>Atualizar</Link>
-            <button onClick={handleDelete}>Apagar</button>
-            <h1>{name}</h1>
-            <p>{description}</p>
-            <img src={url_image} alt={name} />
-            <h2>Avaliações</h2>
-            <ul>
+        <div className="game-details">
+            <div className="game-details-header">
+                <Link to='/update-game' state={{name,description,url_image,id}} className="button update-button">Atualizar</Link>
+                <button onClick={handleDelete} className="button delete-button">Apagar</button>
+            </div>
+            <div className="game-main-info">
+                <img src={url_image} alt={name} className="game-image" />
+                <div className="game-description">
+                    <h1 className="game-title">{name}</h1>
+                    <p>{description}</p>
+                </div>
+            </div>
+            <h2 className="evaluations-title">Avaliações</h2>
+            <ul className="evaluations-list">
                 {evaluations.map(evaluation => (
-                    <li key={evaluation.id}>
-                        <p>Usuário: {evaluation.userName}</p>
-                        <p>Nota: {evaluation.rate}</p>
-                        <p>Comentários: {evaluation.comments}</p>
+                    <li key={evaluation.id} className="evaluation-item">
+                        <p className="evaluation-user">Usuário: {evaluation.userName}</p>
+                        <p className="evaluation-rate">Nota: {evaluation.rate}</p>
+                        <p className="evaluation-comments">Comentários: {evaluation.comments}</p>
                         {usuarioId === evaluation.userId && (
                             <>
-                                <button onClick={() => handleDeleteEvaluation(evaluation.id)}>Apagar</button>
-                                <button onClick={() => handleEdit(evaluation.id, { rate: 'nova nota', comments: 'novos comentários' })}>Editar</button>
+                                <button onClick={() => handleDeleteEvaluation(evaluation.id)} className="button delete-button">Apagar</button>
+                                <button onClick={() => handleEdit(evaluation.id, { rate: 'nova nota', comments: 'novos comentários' })} className="button edit-button">Editar</button>
                             </>
                         )}
                     </li>
                 ))}
             </ul>
-            <h3>Adicionar Avaliação</h3>
-            <form onSubmit={handleSubmit}>
-                <div>
-                    <label>Nota</label>
+            <h3 className="add-evaluation-title">Adicionar Avaliação</h3>
+            <form onSubmit={handleSubmit} className="evaluation-form">
+                <div className="form-group">
+                    <label className="form-label">Nota</label>
                     <input
                         type="number"
                         value={newEvaluation.rate}
                         onChange={(e) => setNewEvaluation({ ...newEvaluation, rate: e.target.value })}
                         required
+                        className="form-input"
                     />
                 </div>
-                <div>
-                    <label>Comentários</label>
+                <div className="form-group">
+                    <label className="form-label">Comentários</label>
                     <textarea
                         value={newEvaluation.comments}
                         onChange={(e) => setNewEvaluation({ ...newEvaluation, comments: e.target.value })}
                         required
+                        className="form-input"
                     />
                 </div>
-                <button type="submit">Adicionar Avaliação</button>
+                <button type="submit" className="button submit-button">Adicionar Avaliação</button>
             </form>
-            {error && <p>{error}</p>}
-            <Link to='/fetch-games'>Voltar</Link>
+            {error && <p className="error-message">{error}</p>}
+            <Link to='/fetch-games' className="button back-button">Voltar</Link>
         </div>
     );
 }
