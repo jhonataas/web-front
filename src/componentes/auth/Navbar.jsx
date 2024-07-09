@@ -23,6 +23,9 @@ export default function Navbar() {
                     <li className="navbar-item">
                         <Link to="/create-game" className="navbar-link">Adicionar Jogo</Link>
                     </li>
+                    <li className="navbar-item">
+                        <Link to="/profile" className="navbar-link">Perfil</Link>
+                    </li>
                 </ul>
                 <button className="logout-button" onClick={handleLogout}>Sair</button>
             </div>

@@ -1,0 +1,59 @@
+/* src/styles/Profile.css */
+
+.profile-container {
+    font-family: 'Press Start 2P', cursive;
+    color: #ffffff;
+    padding: 20px;
+    background-color: rgba(0, 0, 0, 0.85);
+    border-radius: 10px;
+    max-width: 600px;
+    margin: 20px auto;
+    text-align: center;
+}
+
+.profile-container h1, .profile-container h2 {
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+}
+
+.profile-container p {
+    font-size: 1rem;
+    margin: 10px 0;
+}
+
+.profile-container form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.profile-container label {
+    margin: 10px 0 5px;
+}
+
+.profile-container input {
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ffffff;
+    border-radius: 5px;
+    background-color: rgba(255, 255, 255, 0.1);
+    color: #ffffff;
+    width: 80%;
+}
+
+.profile-container button {
+    padding: 10px 20px;
+    background-color: #a020f0;
+    color: #ffffff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.profile-container button:hover {
+    background-color: #800080;
+}
+
+.profile-container p {
+    margin-top: 20px;
+}

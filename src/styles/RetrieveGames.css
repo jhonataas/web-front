@@ -20,7 +20,7 @@ body {
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
     text-align: center;
     width: 95%; /* Ajuste a largura para acomodar 5 itens */
-    max-width: 1100px; /* Ajuste o valor conforme necessário */
+    width: 70rem; /* Ajuste o valor conforme necessário */
 }
 
 .carousel-title {
@@ -41,6 +41,37 @@ body {
 }
 
 .add-game-link:hover {
+    background-color: #800080;
+}
+
+.search-bar {
+    margin-bottom: 1.5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.search-input {
+    padding: 0.75rem;
+    border: 1px solid #ffffff;
+    border-radius: 8px;
+    background-color: rgba(255, 255, 255, 0.1);
+    color: #ffffff;
+    font-size: 1rem;
+    margin-right: 10px;
+}
+
+.search-button {
+    padding: 0.75rem 1.5rem;
+    background-color: #a020f0;
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1rem;
+}
+
+.search-button:hover {
     background-color: #800080;
 }
 

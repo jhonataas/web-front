@@ -13,6 +13,9 @@ export default function GameDetails() {
     const navigate = useNavigate();
     const usuarioId = sessionStorage.getItem('userId');
     const usuarioName = sessionStorage.getItem('userName');
+    console.log(usuarioId);
+    console.log(usuarioName);
+    console.log(evaluations.userId);
 
     const config = {
         headers: {

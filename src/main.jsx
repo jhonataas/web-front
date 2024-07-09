@@ -10,6 +10,7 @@ import CreateGame from './componentes/game/createGame';
 import UpdateGame from './componentes/game/updateGame';
 import GameDetails from './componentes/game/gameDetails';
 import AuthLayout from './componentes/AuthLayout';
+import Profile from './componentes/auth/Profile';
 
 const routes = createBrowserRouter([
   {
@@ -45,6 +46,10 @@ const routes = createBrowserRouter([
       {
         path: 'games/:id',
         element: <GameDetails />
+      },
+      {
+        path: '/profile',
+        element: <Profile />
       }
     ]
   }
