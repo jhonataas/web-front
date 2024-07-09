@@ -1,15 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation, Navigate } from 'react-router-dom';
 import axios from 'axios';
+import '../../styles/UpdateGame.css';
 
 export default function UpdateGame() {
     const [msg, setMsg] = useState('');
     const location = useLocation();
-
-    // Verifica se o estado está presente e contém os dados necessários
     const gameData = location.state || {};
-
-    // Estado local do componente para os dados do jogo
     const [game, setGame] = useState({
         id: gameData.id || '',
         name: gameData.name || '',
@@ -18,14 +15,12 @@ export default function UpdateGame() {
         evaluations: gameData.evaluations || []
     });
 
-    // Configuração do cabeçalho para a requisição HTTP
     const config = {
         headers: {
             Authorization: "Bearer " + sessionStorage.getItem('token')
         }
     };
 
-    // Busca dados do jogo se não estiverem presentes no estado
     useEffect(() => {
         if (!gameData.id || !gameData.name || !gameData.description || !gameData.url_image) {
             const fetchGameDetails = async () => {
@@ -47,7 +42,6 @@ export default function UpdateGame() {
         }
     }, [gameData, config]);
 
-    // Handler para mudança nos inputs do formulário
     const handleChange = (e) => {
         const novoValor = {
             [e.target.name]: e.target.value
@@ -58,14 +52,11 @@ export default function UpdateGame() {
         });
     }
 
-    // Handler para submissão do formulário de atualização
     const handleSubmit = async (e) => {
         e.preventDefault();
 
         try {
-            // Exclui id e evaluations dos dados enviados
             const { id, evaluations, ...updateData } = game;
-
             const resposta = await axios.put(`http://localhost:3000/games/update-game/${id}`, updateData, config);
             if (resposta.status === 200) {
                 setMsg('OK');
@@ -75,50 +66,53 @@ export default function UpdateGame() {
         }
     }
 
-    // Redireciona para a lista de jogos se a atualização foi bem-sucedida
     if (msg === 'OK') {
         return <Navigate to='/fetch-games' />;
     }
 
-    // Exibe mensagem de erro se os dados do jogo não foram encontrados
     if (msg === 'Dados do jogo não encontrados.') {
         return <p>{msg}</p>;
     }
 
-    // Renderiza o formulário de atualização do jogo
     return (
-        <form onSubmit={handleSubmit}>
-            <div>
-                <label htmlFor="name">Título</label>
-                <input
-                    type="text"
-                    id="name"
-                    name="name"
-                    onChange={handleChange}
-                    value={game.name}
-                />
-            </div>
-            <div>
-                <label htmlFor="description">Descrição</label>
-                <input
-                    type="text"
-                    name="description"
-                    id="description"
-                    onChange={handleChange}
-                    value={game.description}
-                />
-            </div>
-            <div>
-                <label htmlFor="url_image">URL da Imagem</label>
-                <input
-                    type="text"
-                    name="url_image"
-                    id="url_image"
-                    onChange={handleChange}
-                    value={game.url_image}
-                />
-            </div>
-            <button type="submit">Atualizar</button>
-        </form>
+        <div className="update-game">
+            <h2 className="update-game-title">Atualizar Jogo</h2>
+            <form onSubmit={handleSubmit} className="update-game-form">
+                <div className="form-group">
+                    <label htmlFor="name" className="form-label">Título</label>
+                    <input
+                        type="text"
+                        id="name"
+                        name="name"
+                        onChange={handleChange}
+                        value={game.name}
+                        className="form-input"
+                    />
+                </div>
+                <div className="form-group">
+                    <label htmlFor="description" className="form-label">Descrição</label>
+                    <input
+                        type="text"
+                        name="description"
+                        id="description"
+                        onChange={handleChange}
+                        value={game.description}
+                        className="form-input"
+                    />
+                </div>
+                <div className="form-group">
+                    <label htmlFor="url_image" className="form-label">URL da Imagem</label>
+                    <input
+                        type="text"
+                        name="url_image"
+                        id="url_image"
+                        onChange={handleChange}
+                        value={game.url_image}
+                        className="form-input"
+                    />
+                </div>
+                <button type="submit" className="button">Atualizar</button>
+            </form>
+        </div>
     );
 }

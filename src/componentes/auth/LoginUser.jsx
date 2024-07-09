@@ -23,6 +23,18 @@ const LoginUser = () => {
         try {
             const response = await axios.post('http://localhost:3000/auth/login', data);
             sessionStorage.setItem('token', response.data);
+
+            const userResponse = await axios.get('http://localhost:3000/auth/me', {
+                headers: {
+                    Authorization: "Bearer " + sessionStorage.getItem('token')
+                }
+            });
+
+            const { id, username } = userResponse.data;
+
+            sessionStorage.setItem('userId', id);
+            sessionStorage.setItem('userName', username);
+            console.log(username);
             setMsg('Usuário Autenticado');
         } catch (error) {
             setMsg(error.response?.data || 'Erro ao autenticar');
@@ -52,7 +64,6 @@ const LoginUser = () => {
                         <label>
                             <input type="checkbox" className="form-checkbox" /> Lembrar-me
                         </label>
-                        <Link to="/forgot-password" className="forgot-password">Esqueceu a Senha?</Link>
                     </div>
                     <button type="submit" className="submit-button">Entrar</button>
                 </form>

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { Link, Navigate } from 'react-router-dom'; // npm install react-router-dom
-import axios from 'axios'; // npm install axios
-import '../../styles/CreateGame.css'; // Certifique-se de criar e importar o CSS
+import { Link, Navigate } from 'react-router-dom'; 
+import axios from 'axios'; 
+import '../../styles/CreateGame.css'; 
 
 export default function CreateGame() {
     const [msg, setMsg] = useState('');

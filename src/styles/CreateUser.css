@@ -1,7 +1,7 @@
 /* Estilos gerais */
 body {
     font-family: 'Arial', sans-serif;
-    background-image: url('../assets/space.png'); /* Caminho relativo para a imagem */
+    background-image: url('../assets/space.png'); 
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -27,7 +27,7 @@ body {
     border-radius: 12px;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
     
-    
+    min-width: 30rem;
     text-align: center;
 }
 
