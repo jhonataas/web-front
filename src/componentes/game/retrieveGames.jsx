@@ -48,7 +48,7 @@ export default function RetrieveGames() {
                 <div className="carousel" ref={carouselRef}>
                     {games.map(game => (
                         <div key={game.id} className="carousel-item">
-                            <Link to={`/game/${game.id}`} className="game-link">
+                            <Link to={`/games/${game.id}`} className="game-link">
                                 <img src={game.url_image} alt={game.name} className="game-image" />
                                 <div className="game-name">{game.name}</div>
                             </Link>
