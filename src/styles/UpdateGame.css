@@ -11,7 +11,7 @@
 }
 
 .update-game-title {
-    font-size: 1rem; /* Diminuir o tamanho da fonte */
+    font-size: 1rem; 
     margin-bottom: 15px;
 }
 
@@ -21,12 +21,12 @@
 }
 
 .form-group {
-    margin-bottom: 10px; /* Ajustar margem inferior */
+    margin-bottom: 10px; 
 }
 
 .form-label {
     margin-bottom: 5px;
-    font-size: 0.75rem; /* Diminuir o tamanho da fonte */
+    font-size: 0.75rem; 
 }
 
 .form-input {
@@ -36,7 +36,7 @@
     background-color: rgba(0, 0, 0, 0.7);
     color: #ffffff;
     font-family: 'Press Start 2P', cursive;
-    font-size: 0.4rem; /* Diminuir o tamanho da fonte */
+    font-size: 0.4rem; 
 }
 
 .button {
@@ -47,7 +47,7 @@
     border-radius: 10px;
     cursor: pointer;
     font-family: 'Press Start 2P', cursive;
-    font-size: 0.5rem; /* Diminuir o tamanho da fonte */
+    font-size: 0.5rem; 
 }
 
 .button:hover {

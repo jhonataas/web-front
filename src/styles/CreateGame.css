@@ -1,7 +1,7 @@
 /* Estilos gerais para o componente CreateGame */
 body {
     font-family: 'Arial', sans-serif;
-    background-image: url('../assets/space.png'); /* Caminho relativo para a imagem */
+    background-image: url('../assets/space.png'); 
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -69,7 +69,7 @@ body {
 
 .back-link {
     padding: 0.75rem 1.5rem;
-    background-color: #555555; /* Cor de fundo */
+    background-color: #555555; 
     color: #ffffff;
     border-radius: 8px;
     text-decoration: none;
@@ -80,7 +80,7 @@ body {
 }
 
 .back-link:hover {
-    background-color: #777777; /* Cor de fundo ao passar o mouse */
+    background-color: #777777; 
     transform: scale(1.05);
 }
 

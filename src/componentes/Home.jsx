@@ -3,7 +3,7 @@
 import React from 'react';
 import { Outlet } from 'react-router-dom';
 import Navbar from '../componentes/auth/Navbar';
-import "../styles/CreateUser.css"; // Certifique-se de que o caminho está correto
+import "../styles/CreateUser.css"; 
 
 export default function Home() {
     return (

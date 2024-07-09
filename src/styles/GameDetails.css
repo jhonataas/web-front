@@ -8,8 +8,8 @@
     border-radius: 10px;
     max-width: 800px;
     margin: 10px auto;
-    overflow-y: auto; /* Adiciona rolagem vertical */
-    max-height: 84vh; /* Define a altura máxima */
+    overflow-y: auto; 
+    max-height: 84vh; 
     margin-top: 5rem;
 }
 
@@ -124,9 +124,9 @@
     margin-right: 5px;
 }
 
-/* Personaliza a barra de rolagem */
+
 .game-details::-webkit-scrollbar {
-    width: 6px; /* Reduz a largura da barra de rolagem */
+    width: 6px; 
 }
 
 .game-details::-webkit-scrollbar-track {
@@ -134,7 +134,7 @@
 }
 
 .game-details::-webkit-scrollbar-thumb {
-    background: rgba(160, 32, 240, 0.7); /* Torna a barra de rolagem mais discreta */
+    background: rgba(160, 32, 240, 0.7); 
     border-radius: 10px;
 }
 
