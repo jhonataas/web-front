@@ -87,7 +87,7 @@ body {
 
 .game-image {
     width: 100%; /* Ocupa toda a largura do item */
-    height: 150px;
+    min-height: 11rem;
     object-fit: cover;
     border-radius: 8px;
 }
