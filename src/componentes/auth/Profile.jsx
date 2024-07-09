@@ -7,6 +7,7 @@ export default function Profile() {
     const [currentPassword, setCurrentPassword] = useState('');
     const [newPassword, setNewPassword] = useState('');
     const [message, setMessage] = useState('');
+    const [showChangePassword, setShowChangePassword] = useState(false);
 
     useEffect(() => {
         const fetchUserProfile = async () => {
@@ -52,31 +53,43 @@ export default function Profile() {
             <h1>Perfil do Usuário</h1>
             <p><strong>Nome:</strong> {user.username}</p>
             <p><strong>Email:</strong> {user.email}</p>
-            <h2>Alterar Senha</h2>
-            <form onSubmit={handleChangePassword}>
-                <div>
-                    <label htmlFor="currentPassword">Senha Atual</label>
-                    <input 
-                        type="password" 
-                        id="currentPassword" 
-                        value={currentPassword}
-                        onChange={(e) => setCurrentPassword(e.target.value)}
-                        required
-                    />
+            <button 
+                className="change-password-button"
+                onClick={() => setShowChangePassword(!showChangePassword)}
+            >
+                {showChangePassword ? 'Cancelar' : 'Alterar Senha'}
+            </button>
+            {showChangePassword && (
+                <div className="change-password-form">
+                    <h2>Alterar Senha</h2>
+                    <form onSubmit={handleChangePassword}>
+                        <div>
+                            <label htmlFor="currentPassword">Senha Atual</label>
+                            <input 
+                                type="password" 
+                                id="currentPassword" 
+                                value={currentPassword}
+                                onChange={(e) => setCurrentPassword(e.target.value)}
+                                required
+                                placeholder="Digite sua senha atual"
+                            />
+                        </div>
+                        <div>
+                            <label htmlFor="newPassword">Nova Senha</label>
+                            <input 
+                                type="password" 
+                                id="newPassword" 
+                                value={newPassword}
+                                onChange={(e) => setNewPassword(e.target.value)}
+                                required
+                                placeholder="Digite sua nova senha"
+                            />
+                        </div>
+                        <button type="submit">Alterar Senha</button>
+                    </form>
                 </div>
-                <div>
-                    <label htmlFor="newPassword">Nova Senha</label>
-                    <input 
-                        type="password" 
-                        id="newPassword" 
-                        value={newPassword}
-                        onChange={(e) => setNewPassword(e.target.value)}
-                        required
-                    />
-                </div>
-                <button type="submit">Alterar Senha</button>
-            </form>
-            {message && <p>{message}</p>}
+            )}
+            {message && <p className="message">{message}</p>}
         </div>
     );
 }

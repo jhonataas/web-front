@@ -64,7 +64,6 @@ const LoginUser = () => {
                         <label>
                             <input type="checkbox" className="form-checkbox" /> Lembrar-me
                         </label>
-                        <Link to="/forgot-password" className="forgot-password">Esqueceu a Senha?</Link>
                     </div>
                     <button type="submit" className="submit-button">Entrar</button>
                 </form>

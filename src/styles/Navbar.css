@@ -1,9 +1,19 @@
-/* src/styles/Navbar.css */
-
-/* Importar fonte voltada para jogos */
 @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
 
-/* Estilos para o componente Navbar */
+body {
+    font-family: 'Press Start 2P', cursive;
+    background-image: url('../assets/space.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    color: #ffffff;
+}
+
 .navbar {
     width: 100%;
     background-color: rgba(0, 0, 0, 0.85);
@@ -13,7 +23,7 @@
     left: 0;
     z-index: 1000;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    font-family: 'Press Start 2P', cursive; /* Aplicar fonte voltada para jogos */
+    font-family: 'Press Start 2P', cursive; 
 }
 
 .navbar-container {
@@ -26,15 +36,16 @@
 }
 
 .navbar-logo {
-    font-size: 1.25rem; /* Tamanho das letras reduzido */
+    font-size: 1.25rem;
     color: #ffffff;
     text-decoration: none;
+    margin-right: 2rem; 
 }
 
 .navbar-menu {
     list-style: none;
     display: flex;
-    gap: 1.5rem; /* Ajustar o espaçamento entre os itens */
+    gap: 4rem; 
 }
 
 .navbar-item {
@@ -45,8 +56,9 @@
 .navbar-link {
     color: #ffffff;
     text-decoration: none;
-    font-size: 0.875rem; /* Tamanho das letras reduzido */
+    font-size: 0.875rem;
     transition: color 0.3s;
+    margin-bottom: 1rem; 
 }
 
 .navbar-link:hover {
@@ -54,15 +66,16 @@
 }
 
 .logout-button {
-    background-color: rgba(255, 255, 255, 0.2); /* Cor de fundo mais discreta */
+    background-color: rgba(255, 255, 255, 0.2);
     color: #ffffff;
     border: none;
     border-radius: 8px;
     padding: 0.5rem 1rem;
     cursor: pointer;
     font-family: 'Press Start 2P', cursive;
-    font-size: 0.875rem; /* Tamanho das letras reduzido */
+    font-size: 0.875rem;
     transition: background-color 0.3s, transform 0.3s;
+    margin-left: 2rem; 
 }
 
 .logout-button:hover {
