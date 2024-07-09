@@ -12,8 +12,9 @@ export default function GameDetails() {
     const navigate = useNavigate();
     const usuarioId = sessionStorage.getItem('userId');
     const usuarioName = sessionStorage.getItem('userName');
-    console.log(usuarioId)
-    console.log(usuarioName)
+    console.log(usuarioId);
+    console.log(usuarioName);
+    console.log(evaluations.userId);
 
     const config = {
         headers: {
@@ -113,10 +114,10 @@ export default function GameDetails() {
                         <p>Usuário: {evaluation.userName}</p>
                         <p>Nota: {evaluation.rate}</p>
                         <p>Comentários: {evaluation.comments}</p>
-                        {usuarioId === evaluation.userId && (
+                        {usuarioId === game.evaluations.userId && (
                             <>
-                                <button onClick={() => handleDeleteEvaluation(evaluation.id)}>Apagar</button>
-                                <button onClick={() => handleEdit(evaluation.id, { rate: 'nova nota', comments: 'novos comentários' })}>Editar</button>
+                                <button onClick={() => handleDeleteEvaluation(game.evaluations.id)}>Apagar</button>
+                                <button onClick={() => handleEdit(game.evaluations.id, { rate: 'nova nota', comments: 'novos comentários' })}>Editar</button>
                             </>
                         )}
                     </li>
