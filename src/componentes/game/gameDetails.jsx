@@ -70,30 +70,6 @@ export default function GameDetails() {
           }
         }
       }
-    
-    const handleDeleteEvaluation = async (evaluationId) => {
-        try {
-            const response = await axios.delete(`http://localhost:3000/evaluations/${evaluationId}`, config);
-            if (response.status === 200) {
-                setEvaluations(evaluations.filter(evaluation => evaluation.id !== evaluationId));
-            }
-        } catch (error) {
-            setError('Erro ao apagar a avaliação.');
-            console.error(error);
-        }
-    };
-
-    const handleEdit = async (evaluationId, updatedEvaluation) => {
-        try {
-            const response = await axios.put(`http://localhost:3000/evaluations/${evaluationId}`, updatedEvaluation, config);
-            if (response.status === 200) {
-                setEvaluations(evaluations.map(evaluation => (evaluation.id === evaluationId ? response.data : evaluation)));
-            }
-        } catch (error) {
-            setError('Erro ao editar a avaliação.');
-            console.error(error);
-        }
-    };
 
     if (!game) {
         return <p>Carregando...</p>;
@@ -121,12 +97,6 @@ export default function GameDetails() {
                         <p className="evaluation-user">Usuário: {evaluation.userName}</p>
                         <p className="evaluation-rate">Nota: {evaluation.rate}</p>
                         <p className="evaluation-comments">Comentários: {evaluation.comments}</p>
-                        {usuarioId === evaluation.userId && (
-                            <>
-                                <button onClick={() => handleDeleteEvaluation(evaluation.id)} className="button delete-button">Apagar</button>
-                                <button onClick={() => handleEdit(evaluation.id, { rate: 'nova nota', comments: 'novos comentários' })} className="button edit-button">Editar</button>
-                            </>
-                        )}
                     </li>
                 ))}
             </ul>
