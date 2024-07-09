@@ -7,6 +7,8 @@ export default function RetrieveGames() {
     const [games, setGames] = useState([]);
     const [authorized, setAuthorized] = useState(false);
     const carouselRef = useRef(null);
+    const [filteredGames, setFilteredGames] = useState([]);
+    const [searchTerm, setSearchTerm] = useState('');
 
     const config = {
         headers: {
@@ -28,6 +30,17 @@ export default function RetrieveGames() {
         }
         fetchGames();
     }, []);
+
+    useEffect(() => {
+        const filtered = games.filter(game =>
+            game.name.toLowerCase().includes(searchTerm.toLowerCase())
+        );
+        setFilteredGames(filtered);
+    }, [searchTerm, games]);
+
+    const handleSearchChange = (e) => {
+        setSearchTerm(e.target.value);
+    };
   
     if (!authorized) return <p className="no-auth">Sem Autorização</p>;
 
@@ -43,10 +56,18 @@ export default function RetrieveGames() {
         <div className="carousel-container">
             <h2 className="carousel-title">Lista de Jogos</h2>
             <Link to='/create-game' className="add-game-link">Adicionar Novo Jogo</Link>
+            <div className="search-bar">
+                <input
+                    type="text"
+                    placeholder="Buscar por título..."
+                    value={searchTerm}
+                    onChange={handleSearchChange}
+                />
+            </div>
             <div className="carousel-wrapper">
                 <button className="carousel-nav left" onClick={scrollLeft}>&lt;</button>
                 <div className="carousel" ref={carouselRef}>
-                    {games.map(game => (
+                    {filteredGames.map(game => (
                         <div key={game.id} className="carousel-item">
                             <Link to={`/games/${game.id}`} className="game-link">
                                 <img src={game.url_image} alt={game.name} className="game-image" />
